@@ -2,6 +2,7 @@
 <template>
   <div>
     <Navbar />
+    
     <section class="section">
       <router-view /> <!-- Router view is similar to the block tag in Jinja 2-->
     </section>

@@ -59,6 +59,44 @@ export default {
             if (this.username === '') {
                 this.errors.push('Username is required.')
             }
+
+            if (this.password1 === '') {
+                this.errors.push('Password is required.')
+            }
+
+            if (this.password1 !== this.password2) {
+                this.errors.push('Passwords do not match.')
+            }
+
+            if (!this.errors.length) {
+                const formData = {
+                    username: this.username,
+                    password: this.password1,
+                }
+
+                axios
+                    .post('/api/v1/users/', formData)
+                    .then(response => {
+                        toast({
+                            message: 'Account created successfully',
+                            type: 'is-success',
+                            dismissible: true,
+                            pauseOnHover: true,
+                            duration: 2000,
+                            position: 'bottom-right',
+                        })
+                        this.$router.push('/log-in')
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            for (const property in error.response.data) {
+                                this.errors.push(`${property}: ${error.response.data[property]}`)
+                            }
+                        } else if (error.message) {
+                            this.errors.push("Something went wrong. Please try again")
+                        }
+                    })
+            }
         }
     }
 }
